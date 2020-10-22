@@ -4,6 +4,7 @@ var todoController = require('../controllers/todos')
 
 // import todoController from './../controllers/todos'
 
+router.post('/:id/comment', todoController.addComment);
 router.get('/:id', todoController.getTodo);
 router.get('/', todoController.getAllTodos);
 router.post('/', todoController.createTodo);

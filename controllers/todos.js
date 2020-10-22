@@ -5,7 +5,11 @@ const todos = {
      getAllTodos: async (req, res) => {
         let todos = []
 		try {
-				todos = await Model.Todos.findAll()
+				todos = await Model.Todos.findAll({
+                    include: [{
+                        model: Model.Comments
+                    }]
+                })
 		} catch(e) {
 				console.log(e)
 		}
@@ -22,7 +26,10 @@ const todos = {
 			todo = await Model.Todos.findOne({
 				where: {
 					id: req.params.id
-				}
+                },
+                include: [{
+                    model: Model.Comments
+                }]
 			})
 		} catch(e) {
 				console.log(e)
@@ -77,7 +84,23 @@ const todos = {
 		res.status(204).json({
 			status: 'Success Delete'
 		})
-    }
+    },
+    
+    addComment: async (req, res) => {
+
+		let comment = {}
+
+		try {
+			comment = await Model.Comments.create({
+				comment: req.body.comment,
+				TodoId: req.params.id
+			})
+		} catch(e) {
+			console.log(e)
+		}
+
+		res.json(comment)
+	}
 }
 
 
